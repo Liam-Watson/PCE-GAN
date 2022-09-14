@@ -48,15 +48,38 @@ You may choose to install dependencies with pip or conda.
 You are assumed to be using a unix based environment. 
 `pip3 install -r requirements.txt` or `conda env create -f environment.yml`
 Note: Usage may vary depending on GPU and CUDA version.
+
+### Preprocess data
+
+
+Before running the preprocessing, download and install the preprocessing libraries CoMA uses from [MPI-IS/mesh](https://github.com/MPI-IS/mesh).
+You will need to clone the repo.
+Then run `sudo apt-get install libboost-dev` or on mac os `brew install boost`.
+
+You will need to use the included python enviroment with the following commands: 
+```
+$ python3 -m venv --copies my_venv
+$ source my_venv/bin/activate
+```
+Then use the makefile compile and install psbody-mesh:
+`BOOST_INCLUDE_DIRS=/path/to/boost/include make all`
+
+Then one can run the CoMA preprocessing script: 
+`python processData.py --data <PATH_OF_RAW_DATA> --save_path <PATH_TO_SAVE_PROCESSED DATA (preprocessedData)>`
+
+Preprocessed data can be provided on request - given you have CoMA permission.
+
 ### Training
 #### GAN 
-To train the GAN model:
+To train the GAN model: 
+
 `chmod +x trainPCEGAN.sh`
 
 `./trainPCEGAN.sh` One may choose to modify hyperparameters as arguments in the file. 
 
 #### PointNet
-To train the PointNet classifier:
+To train the PointNet classifier: 
+
 `cd pointnet` 
 
 `pip install -e .` 
