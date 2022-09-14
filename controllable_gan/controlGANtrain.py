@@ -44,7 +44,7 @@ show_figs = opt.show_figs
 
 #Set seed for reproducibility
 randomSeed = random.randint(1, 10000)  # use if you want new results
-# randomSeed = 6249 # use if you want specific results
+randomSeed = 2348 # use if you want specific results
 print("Random Seed: ", randomSeed) # print the seed in use
 random.seed(randomSeed) # set the seed
 torch.manual_seed(randomSeed) # set the seed for pytorch
@@ -81,10 +81,10 @@ disc.train() # set discriminator to training mode
 # Configure variables needed when show figs is true - this includes loss figures and performance figures. 
 if show_figs:
     realSubset = int(40/4) # number of real used in test set 
-    v1 = np.load("./processedDataFull/bareteeth/test.npy") 
-    v3 = np.load("./processedDataFull/cheeks_in/test.npy")
-    v8 = np.load("./processedDataFull/mouth_extreme/test.npy")
-    v9 = np.load("./processedDataFull/high_smile/test.npy")
+    v1 = np.load("./processedData/bareteeth/test.npy") 
+    v3 = np.load("./processedData/cheeks_in/test.npy")
+    v8 = np.load("./processedData/mouth_extreme/test.npy")
+    v9 = np.load("./processedData/high_smile/test.npy")
 
     np.random.shuffle(v1) # shuffle the data
     np.random.shuffle(v3) 
@@ -137,9 +137,9 @@ for epoch in range(NUM_EPOCHS):
         gen.zero_grad() # zero gradients
         loss_gen.backward() # backpropagate loss
         opt_gen.step() # update generator weights
-
-        # Every 100 batches print loss, plot figures and show generated face
-        if batch_idx % 100 == 0:
+        meshManager.updateRenderer()
+        # Every 10 batches print loss, plot figures and show generated face
+        if batch_idx % 10 == 0:
             print(
                 f"Epoch [{epoch}/{NUM_EPOCHS}] Batch {batch_idx}/{len(dataloader)} \
                   Loss D: {loss_disc:.4f}, loss G: {loss_gen:.4f}"
@@ -158,7 +158,7 @@ for epoch in range(NUM_EPOCHS):
                     # text_noise = torch.randn(BATCH_SIZE, NOISE_DIM, 1).to(device)
                     fake = gen(fixed_noise)
                     # fake = gen(text_noise)
-                    fake = (fake.to('cpu').double().detach().numpy()[:32])
+                    fake = (fake.to('cpu').double().detach().numpy()[:2])
                     # print(fake.shape)
                 meshManager.setPointCloud(fake[0])
                 meshManager.displayPointCloud()
@@ -168,9 +168,9 @@ for epoch in range(NUM_EPOCHS):
     scheduler_disc.step() # update discriminator learning rate
 
     # Save model every 10 epochs as well as calculate and plot metrics
-    if epoch % 10 == 0:
-        torch.save(gen.state_dict(), "controllable_gan/models/testing_gen_" + str(epoch) + "_" + saveString) # save generator
-        torch.save(disc.state_dict(), "controllable_gan/models/testing_disc_" + str(epoch) + "_" + saveString) # save discriminator
+    if epoch % 100 == 0 and epoch != 0:
+        # torch.save(gen.state_dict(), "controllable_gan/models/testing_gen_" + str(epoch) + "_" + saveString) # save generator
+        # torch.save(disc.state_dict(), "controllable_gan/models/testing_disc_" + str(epoch) + "_" + saveString) # save discriminator
         lossFig.savefig("losses2_"+ str(epoch)+"_.png") # save loss figure
         gen.eval() # set generator to evaluation mode
         with torch.no_grad():

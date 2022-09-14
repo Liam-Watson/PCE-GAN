@@ -38,8 +38,8 @@ torch.manual_seed(randomSeed) # set the seed for pytorch
 z = torch.randn(BATCH_SIZE, NOISE_DIM, 1, device=device).requires_grad_() # Create noise vector (note that we require grad for the noise vector)
 
 classifier = PointNetCls(k=2, feature_transform=False) # Create classifier (k is number of classes will need to change for higher number of expressions)
-# classifier.load_state_dict(torch.load("pointnet/utils/cls/cls_500_model_550_4params.pth")) # Load classifier parameters (4 expressions)
-classifier.load_state_dict(torch.load("pointnet/utils/cls/cls_model_49_2params.pth")) # Load classifier parameters (2 expressions)
+# classifier.load_state_dict(torch.load("pointnet/utils/cls/good_4_cls_550epoch.pth")) # Load classifier parameters (4 expressions)
+classifier.load_state_dict(torch.load("pointnet/utils/cls/good_2_cls.pth")) # Load classifier parameters (2 expressions)
 classifier.to(device) # Move classifier to device (gpu if available)
 
 lr = 0.01 # Learning rate used for control update (0.01 is large, 0.00001 is small)

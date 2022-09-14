@@ -5,7 +5,7 @@ import torch
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+from sklearn.metrics import confusion_matrix
 # load data
 test_dataset = CoMADataset(
         root="processedData/",
@@ -23,7 +23,7 @@ dataloader = torch.utils.data.DataLoader(
 
 # load model
 classifier = PointNetCls(k=4, feature_transform=False)
-classifier.load_state_dict(torch.load("pointnet/utils/cls/cls_500_model_550_4params.pth"))
+classifier.load_state_dict(torch.load("pointnet/utils/cls/good_4_cls_550epoch.pth"))
 classifier.to("cuda") # move model to gpu
 
 y_true = [] # true labels
@@ -50,6 +50,7 @@ for i, data in enumerate(dataloader, 0):
             y_true.append(classes[x])
 
 # get confusion matrix
+conf = (confusion_matrix(y_true, y_pred, labels=["bareteeth", "cheeks_in", "mouth_extreme", "high_smile"]))
 pd_conf = pd.DataFrame(conf, index = ["bare teeth", "cheeks in", "mouth open", "high smile"],
                   columns =  ["bare teeth", "cheeks in", "mouth open", "high smile"])
 plt.figure(figsize = (10,7))

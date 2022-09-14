@@ -5,15 +5,19 @@ The method is able to generate recognizable human faces with stable expression m
 ## Results
 
 ### Face synthesis
+![pcface](results/pcbaseline.drawio.png)
+![surfacerecon](results/facebaseline.png)
 ### Expression Manipulation
-
+![expression](results/mOpenExpression2.drawio.png)
 ## Usage
 Anyone may use this code for research purposes or otherwise. If you use this code in your research, please cite the following paper:
+```
 @misc{PCE-GAN,
     author = {Liam Watson},
     title = {Expression Controllable 3D Point Cloud GAN (PCE-GAN)},
     year = {2022},
 }
+```
 ## Requirements
 Included in the project is a requirements file that can be used to install the required dependencies.
 Alternatively there is an anaconda environment file that can be used to create a conda environment with the required dependencies.
@@ -40,24 +44,35 @@ visualiseFaceSimple.py is used for visualising the included face model.
 ## Getting started 
 ### Installation 
 You may choose to install dependencies with pip or conda. 
+You are assumed to be using a unix based environment. 
 `pip3 install -r requirements.txt` or `conda env create -f environment.yml`
 Note: Usage may vary depending on GPU and CUDA version.
 ### Training
 #### GAN 
-To train the GAN model, run `python3 controllable_gan/train.py`
+To train the GAN model:
+`chmod +x trainPCEGAN.sh`
+`./trainPCEGAN.sh` One may choose to modify hyperparameters as arguments in the file. 
+
 #### PointNet
 To train the PointNet classifier:
 `cd pointnet`
-`./train_classification.py`
+`pip install -e .`
+`chmod +x trainscript.sh`
+`./trainscript.sh`
 
 ### Testing
 #### Controlled generation
-To generate faces with the GAN model, run `python3 controllable_gan/faceGEN.py`
+To generate faces with the GAN model, run `python3 controllable_gan/faceGEN.py <Path to saved generator model>`
 You may want to play around with parameters such as learning rate, batch size, eval/train modes/ regularisation (included) etc.
 #### PointNet classifier
+You will need to change the relative paths in the classifier dataloder - just uncomment lines 166-169.
+This is set up for 4 expressions so you will need to make modifications for 2. 
 To test the PointNet classifier, run `python3 classifierEval.py`
 
 ### Assessment framework
-To run the testing framework `python3 test.py` 
+To run the testing framework:
+`chmod +x controlGANtest.sh`
+`./controlGANtest.sh`
+ 
 
 

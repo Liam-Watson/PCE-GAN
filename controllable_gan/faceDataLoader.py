@@ -9,10 +9,10 @@ class FaceDataLoader():
     def __init__(self, TRAIN_SUBSET, BATCH_SIZE):
         
         # Load vertices
-        v1 = np.load("./processedDataFull/bareteeth/test.npy") 
-        v3 = np.load("./processedDataFull/cheeks_in/test.npy")
-        v8 = np.load("./processedDataFull/mouth_extreme/test.npy")
-        v9 = np.load("./processedDataFull/high_smile/test.npy")
+        v1 = np.load("./processedData/bareteeth/test.npy") 
+        v3 = np.load("./processedData/cheeks_in/test.npy")
+        v8 = np.load("./processedData/mouth_extreme/test.npy")
+        v9 = np.load("./processedData/high_smile/test.npy")
 
         np.random.shuffle(v1) # shuffle the data
         np.random.shuffle(v3)

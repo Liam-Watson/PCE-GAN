@@ -27,7 +27,7 @@ z_dim = int(sys.argv[6]) # get noise dim from args
 
 if gan_variant == 2:
     #controllable gan 
-    model = controlGAN(z_dim, 1, 5023).to('cpu') # initilise model
+    model = controlGAN(z_dim).to('cpu') # initilise model
 else:
     print('invalid gan variant for this work')
     quit()
@@ -44,31 +44,31 @@ generated_samples = t.detach().numpy()
 # generate samples
 for i in range(num_samples-1):
     noise = torch.randn((batch_size, z_dim, 1)).to('cpu') # generate noise
-    t = model(noise) # generate sample
+    fake = model(noise) # generate sample
+    # Below commented out code is for expression manipulation testing
+    # z = torch.randn(batch_size, z_dim, 1, device='cpu').requires_grad_()
+    # classifier = PointNetCls(k=2, feature_transform=False)
+    # lr = 0.01
+    # classifier.load_state_dict(torch.load("pointnet/utils/cls/cls_model_49_2params.pth"))
+    # model.eval()
+    # classifier.eval()
+    # class_index = 1
+    # score = 0
+    # count = 0
+    # while count < 20 and score < 0.8:
+    #     count+=1
+    #     model.zero_grad()
+    #     classifier.zero_grad()
 
-    z = torch.randn(batch_size, z_dim, 1, device='cpu').requires_grad_()
-    classifier = PointNetCls(k=2, feature_transform=False)
-    lr = 0.01
-    classifier.load_state_dict(torch.load("pointnet/utils/cls/cls_model_49_2params.pth"))
-    model.eval()
-    classifier.eval()
-    class_index = 1
-    score = 0
-    count = 0
-    while count < 20 and score < 0.8:
-        count+=1
-        model.zero_grad()
-        classifier.zero_grad()
-
-        fake = model(z) # 1
+    #     fake = model(z) # 1
         
-        fake2 = fake.transpose(2, 1)
-        expression_score = classifier(fake2)[0][:,class_index]#[0].squeeze(0)[1] # 2
-        score = np.exp(expression_score.detach().numpy())[0]
-        print(i, score)
-        expression_score[0].backward()
+    #     fake2 = fake.transpose(2, 1)
+    #     expression_score = classifier(fake2)[0][:,class_index]#[0].squeeze(0)[1] # 2
+    #     score = np.exp(expression_score.detach().numpy())[0]
+    #     print(i, score)
+    #     expression_score[0].backward()
         
-        z.data = z + (z.grad*lr) # 4
+    #     z.data = z + (z.grad*lr) # 4
 
     generated_samples = np.append(generated_samples, fake.detach().numpy(), axis=0)
 
