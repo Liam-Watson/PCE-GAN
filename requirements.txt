@@ -1,0 +1,7 @@
+numpy
+open3d
+torch
+torchvision
+tqdm
+sklearn
+seaborn
