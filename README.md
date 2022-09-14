@@ -1,4 +1,5 @@
-# PCE-GAN
+# PCE-GAN 
+[Github](https://github.com/Liam-Watson/PCE-GAN/tree/main)
 ## Introduction
 PCE-GAN is a controllable GAN variant that uses a DCGAN based generator and PointNet based classifier for generation of expression controlled point set facial data. 
 The method is able to generate recognizable human faces with stable expression manipulation with metrics comparable to state of the art methods.
@@ -73,6 +74,6 @@ To test the PointNet classifier, run `python3 classifierEval.py`
 To run the testing framework:
 `chmod +x controlGANtest.sh`
 `./controlGANtest.sh`
- 
+
 
 
